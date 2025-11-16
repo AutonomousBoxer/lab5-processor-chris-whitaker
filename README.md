@@ -1,58 +1,66 @@
 # lab5-processor-chris-whitaker
+## Description
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+- This project is the processor side of the lab using Quarkus Reactive Messaging with RabbitMQ. 
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
-## Running the application in dev mode
+- The processor subscribes to RabbitMQ queues that receive `Student` messages from the producer application. It uses 
+  routing keys based on GPA to send students to different consumers.
 
-You can run your application in dev mode that enables live coding using:
+- ### Routing Keys:
+    - The producer sets the RabbitMQ routing key based on GPA. The processor subscribes to:
+        - `gpa40` to President's List.
+        - `gpa35` to Dean's List.
 
-```shell script
-./mvnw quarkus:dev
-```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+- ### This Application Uses:
+  - quarkus-messaging-rabbitmq 
 
-## Packaging and running the application
 
-The application can be packaged using:
+## Installation Instructions:
 
-```shell script
-./mvnw package
-```
+- Java 17+
+    - [Eclipse Temurin JDK 17 (Adoptium)](https://adoptium.net/temurin/releases/?version=17)
+    - [Oracle JDK 17 Downloads](https://www.oracle.com/java/technologies/downloads/)
+- Maven 3.9+
+    - [maven.apache.org/install.html](https://maven.apache.org/install.html)
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+- ### Verify installs
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+    ```bash
+    java -version
+    mvn -version
+    ```
 
-If you want to build an _über-jar_, execute the following command:
+- ### Download the project ZIP
+  - Download the project.
+  - Extract the ZIP to a folder.
+  - In a terminal navigate to the folder.
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
+## How to Run the Code
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+- You can run your application in dev mode that enables live coding using:
 
-## Creating a native executable
+    ```shell script
+    ./mvnw clean compile
+    ```
 
-You can create a native executable using:
+    ```shell script
+    ./mvnw quarkus:dev
+    ```
 
-```shell script
-./mvnw package -Dnative
-```
+## File Structure
+    src/
+        main/
+            java/
+                edu/franklin/lab5/chriswhitaker/
+                    Student.java
+                    StudentProcessor.java
+            resources/
+                application.properties
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+## Known Issues
+- Only the President's List `gpa40` and Dean's List `gpa35` are implemented.
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/lab5-processor-chris-whitaker-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- Messaging - RabbitMQ Connector ([guide](https://quarkus.io/guides/rabbitmq)): Connect to RabbitMQ with Reactive Messaging
+## Author
+`Chris Whitaker`
